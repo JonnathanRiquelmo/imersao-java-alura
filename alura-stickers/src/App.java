@@ -42,8 +42,8 @@ public class App {
 
         // Data processing (mapper)
         for (Map<String, String> movie : moviesList) {
-            System.out.println("Título: \u001b[1m " + movie.get("title") + "\u001b[0m (" + movie.get("year") + ")");
-            System.out.println("Classificação: " + movie.get("imDbRating") 
+            System.out.println("Title: \u001b[1m " + movie.get("title") + "\u001b[0m (" + movie.get("year") + ")");
+            System.out.println("Rating: " + movie.get("imDbRating") 
             +" | \u001b[40;1m "
             + IMDbRatingStars((int) Math.floor(Double.parseDouble(movie.get("imDbRating"))))
             + " \u001b[0m" 
