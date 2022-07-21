@@ -1,4 +1,6 @@
+import java.io.InputStream;
 import java.net.URI;
+import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -11,6 +13,7 @@ import java.util.Map;
 // https://api.mocki.io/v2/549a5d8b
 // https://alura-filmes.herokuapp.com/conteudos
 // https://raw.githubusercontent.com/alexfelipe/imersao-java/json/top250.json
+// https://api.mocki.io/v2/549a5d8b/Top250Movies
 
 public class App {
 
@@ -26,7 +29,7 @@ public class App {
     public static void main(String[] args) throws Exception {
 
         // HTTP Connection and Request
-        String url = "https://alura-filmes.herokuapp.com/conteudos";
+        String url = "https://api.mocki.io/v2/549a5d8b/Top250Movies";
         URI address = URI.create(url);
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder(address).GET().build();
@@ -50,5 +53,21 @@ public class App {
             );
             System.out.println("Poster: " + movie.get("image") + "\n");
         }
+
+        StickerGen generator = new StickerGen();
+
+        for (Map<String,String> movie : moviesList) {
+            String urlImage = movie.get("image");
+            String title = movie.get("title");
+
+            InputStream inputStream = new URL(urlImage).openStream();
+            String fileName = "img/" + title + ".png";
+
+            generator.createSticker(inputStream, fileName);
+
+            System.out.println("Retrieving \'" + title + "\' poster...");
+        }
+
+        System.out.println("\n Finished !");
     }
 }
