@@ -15,7 +15,7 @@ public class StickerGen {
 
     public void createSticker(InputStream inputStream, String fileName) throws Exception {
         // https://m.media-amazon.com/images/M/MV5BYTQ4MjA4NmYtYjRhNi00MTEwLTg0NjgtNjk3ODJlZGU4NjRkL2ltYWdlL2ltYWdlXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_UY176_CR0,0,128,176_AL_.jpg
-        String text = "Niiiiice movie!";
+        String text = "Niiiiice!";
         // BufferedImage originalImg = ImageIO.read(new File("img/sticker.jpg"));
         BufferedImage originalImg = ImageIO.read(inputStream);
 

@@ -1,9 +1,5 @@
 import java.io.InputStream;
-import java.net.URI;
 import java.net.URL;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Map;
 
@@ -30,18 +26,12 @@ public class App {
 
         // HTTP Connection and Request
         String url = "https://api.mocki.io/v2/549a5d8b/Top250Movies";
-        URI address = URI.create(url);
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder(address).GET().build();
-
-        // HTTP Send and Response
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        String body = response.body();
-        // System.out.println(body);
-
+        
+        HTTPClient httpConnection = new HTTPClient();
+        
         // Data extraction (parser)
         JsonParser parser = new JsonParser();
-        List<Map<String, String>> moviesList = parser.parse(body);
+        List<Map<String, String>> moviesList = parser.parse(httpConnection.dataSearch(url));
 
         // Data processing (mapper)
         for (Map<String, String> movie : moviesList) {
