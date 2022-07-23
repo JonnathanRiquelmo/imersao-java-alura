@@ -1,15 +1,6 @@
 import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
-import java.util.Map;
-
-// ** imdb API is down, so we can use other alternatives **
-// https://mocki.io/v1/9a7c1ca9-29b4-4eb3-8306-1adb9d159060
-// https://alura-imdb-api.herokuapp.com/movies
-// https://api.mocki.io/v2/549a5d8b
-// https://alura-filmes.herokuapp.com/conteudos
-// https://raw.githubusercontent.com/alexfelipe/imersao-java/json/top250.json
-// https://api.mocki.io/v2/549a5d8b/Top250Movies
 
 public class App {
 
@@ -26,38 +17,32 @@ public class App {
 
         // HTTP Connection and Request
         String url = "https://api.mocki.io/v2/549a5d8b/Top250Movies";
-        
+
         HTTPClient httpConnection = new HTTPClient();
-        
-        // Data extraction (parser)
-        JsonParser parser = new JsonParser();
-        List<Map<String, String>> moviesList = parser.parse(httpConnection.dataSearch(url));
+        String data = httpConnection.dataSearch(url);
+
+        Extractor extractor = new Extractor();
+
+        List<Contents> contentList = extractor.dataExtract(data);
 
         // Data processing (mapper)
-        for (Map<String, String> movie : moviesList) {
-            System.out.println("Title: \u001b[1m " + movie.get("title") + "\u001b[0m (" + movie.get("year") + ")");
-            System.out.println("Rating: " + movie.get("imDbRating") 
-            +" | \u001b[40;1m "
-            + IMDbRatingStars((int) Math.floor(Double.parseDouble(movie.get("imDbRating"))))
-            + " \u001b[0m" 
-            );
-            System.out.println("Poster: " + movie.get("image") + "\n");
+        for (Contents content : contentList) {
+            System.out.println("Title: \u001b[1m " + content.getTitle() + "\u001b[0m (" + content.getYear() + ")");
+            System.out.println("Rating: " + content.getImageUrl()
+                    + " | \u001b[40;1m "
+                    + IMDbRatingStars((int) Math.floor(Double.parseDouble(content.getImDbRating())))
+                    + " \u001b[0m");
+            System.out.println("Poster: " + content.getImageUrl() + "\n");
         }
 
         StickerGen generator = new StickerGen();
 
-        for (Map<String,String> movie : moviesList) {
-            String urlImage = movie.get("image");
-            String title = movie.get("title");
-
-            InputStream inputStream = new URL(urlImage).openStream();
-            String fileName = "img/" + title + ".png";
-
+        for (Contents content : contentList) {
+            InputStream inputStream = new URL(content.getImageUrl()).openStream();
+            String fileName = "img/" + content.getTitle() + ".png";
             generator.createSticker(inputStream, fileName);
-
-            System.out.println("Retrieving \'" + title + "\' poster...");
+            System.out.println("Retrieving \'" + content.getTitle() + "\' poster...");
         }
-
         System.out.println("\n Finished !");
     }
 }

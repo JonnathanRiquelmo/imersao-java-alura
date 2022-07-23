@@ -1,15 +1,10 @@
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
-
 import javax.imageio.ImageIO;
-
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontMetrics;
-// import java.awt.GraphicsEnvironment;
 
 public class StickerGen {
 
